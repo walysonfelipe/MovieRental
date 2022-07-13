@@ -1,5 +1,6 @@
 export interface CreateMovieDTO {
-    title: string
-    duration: number
-    release_date: string
+    id?: string
+    title?: string
+    duration?: number
+    release_date?: string
 }
