@@ -7,7 +7,9 @@ import { CreateUserDTO } from "../../dtos/CreateUserDTO";
 export class UpdateUserUseCase{
     async execute({ id, name, email }: CreateUserDTO ): Promise<any> {
 
-       
+          if(!id){
+            throw new AppError("User does not exists!");
+          }
           const userExists = await prisma.user.findUnique({
             where:{
                 id
@@ -18,15 +20,7 @@ export class UpdateUserUseCase{
             throw new AppError("User does not exists!");
           }
          
-          if(!name){
-            throw new AppError("Username not filled!");
-          }
-
-          if(!email){
-             throw new AppError("Email not filled!")
-          }
-
-        const updateUser = await prisma.user.update({
+        const updateUser = prisma.user.update({
             where: { id },
             data: { 
                 name,
@@ -34,6 +28,9 @@ export class UpdateUserUseCase{
              },
         });
 
+        await updateUser.catch((err)=>{
+          throw new AppError(`Update Not Completed!`);
+        });
          return { message: "User updated successfully!"};
     }
 }

@@ -4,9 +4,6 @@ import { CreateUserDTO } from "../../dtos/CreateUserDTO";
 
 export class DeleteUserUseCase {
     async execute({ id }: CreateUserDTO): Promise<any> {
-        if(!id){
-            throw new AppError("User not specified!");
-        }
 
       const deleteUser = prisma.user.delete({
             where:{
@@ -14,7 +11,6 @@ export class DeleteUserUseCase {
             }
         });
        
-
       await deleteUser.catch((err)=>{
         throw new AppError(err.meta.cause);
       });
